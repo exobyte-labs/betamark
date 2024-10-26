@@ -1,206 +1,103 @@
 # Note from Laurence: I removed a couple of entires after checking a few for BICYCLE presence/absence.
 
 import tqdm
+from pathlib import Path
 
-# # Train dataset
-LIST_OF_BICYCLES = [
-    "http://images.cocodataset.org/train2017/000000483108.jpg",
-    "http://images.cocodataset.org/train2017/000000293802.jpg",
-    "http://images.cocodataset.org/train2017/000000079841.jpg",
-    "http://images.cocodataset.org/train2017/000000515289.jpg",
-    "http://images.cocodataset.org/train2017/000000562150.jpg",
-    "http://images.cocodataset.org/train2017/000000412151.jpg",
-    "http://images.cocodataset.org/train2017/000000462565.jpg",
-    "http://images.cocodataset.org/train2017/000000509822.jpg",
-    "http://images.cocodataset.org/train2017/000000321107.jpg",
-    "http://images.cocodataset.org/train2017/000000061181.jpg",
-    "http://images.cocodataset.org/train2017/000000018783.jpg",
-    "http://images.cocodataset.org/train2017/000000012896.jpg",
-    "http://images.cocodataset.org/train2017/000000465692.jpg",
-    "http://images.cocodataset.org/train2017/000000391584.jpg",
-    "http://images.cocodataset.org/train2017/000000241350.jpg",
-    "http://images.cocodataset.org/train2017/000000438024.jpg",
-    "http://images.cocodataset.org/train2017/000000442726.jpg",
-    "http://images.cocodataset.org/train2017/000000435937.jpg",
-    "http://images.cocodataset.org/train2017/000000292819.jpg",
-    "http://images.cocodataset.org/train2017/000000157416.jpg",
-    "http://images.cocodataset.org/train2017/000000010393.jpg",
-    "http://images.cocodataset.org/train2017/000000084540.jpg",
-    "http://images.cocodataset.org/train2017/000000007125.jpg",
-    "http://images.cocodataset.org/train2017/000000507249.jpg",
-    "http://images.cocodataset.org/train2017/000000075923.jpg",
-    "http://images.cocodataset.org/train2017/000000240918.jpg",
-    "http://images.cocodataset.org/train2017/000000122302.jpg",
-    "http://images.cocodataset.org/train2017/000000140006.jpg",
-    "http://images.cocodataset.org/train2017/000000536444.jpg",
-    "http://images.cocodataset.org/train2017/000000344271.jpg",
-    "http://images.cocodataset.org/train2017/000000420081.jpg",
-    "http://images.cocodataset.org/train2017/000000148668.jpg",
-    "http://images.cocodataset.org/train2017/000000390137.jpg",
-    "http://images.cocodataset.org/train2017/000000114183.jpg",
-    "http://images.cocodataset.org/train2017/000000020307.jpg",
-    "http://images.cocodataset.org/train2017/000000280736.jpg",
-    "http://images.cocodataset.org/train2017/000000536321.jpg",
-    "http://images.cocodataset.org/train2017/000000188146.jpg",
-    "http://images.cocodataset.org/train2017/000000559312.jpg",
-    "http://images.cocodataset.org/train2017/000000535808.jpg",
-    "http://images.cocodataset.org/train2017/000000451944.jpg",
-    "http://images.cocodataset.org/train2017/000000212558.jpg",
-    "http://images.cocodataset.org/train2017/000000377867.jpg",
-    "http://images.cocodataset.org/train2017/000000139291.jpg",
-    "http://images.cocodataset.org/train2017/000000456323.jpg",
-    "http://images.cocodataset.org/train2017/000000549386.jpg",
-    "http://images.cocodataset.org/train2017/000000254491.jpg",
-    "http://images.cocodataset.org/train2017/000000314515.jpg",
-    "http://images.cocodataset.org/train2017/000000415904.jpg",
-    "http://images.cocodataset.org/train2017/000000101636.jpg",
-    "http://images.cocodataset.org/train2017/000000315173.jpg",
-    "http://images.cocodataset.org/train2017/000000260627.jpg",
-    "http://images.cocodataset.org/train2017/000000001722.jpg",
-    "http://images.cocodataset.org/train2017/000000031092.jpg",
-    "http://images.cocodataset.org/train2017/000000556205.jpg",
-    "http://images.cocodataset.org/train2017/000000049097.jpg",
-    "http://images.cocodataset.org/train2017/000000070815.jpg",
-    "http://images.cocodataset.org/train2017/000000467000.jpg",
-    "http://images.cocodataset.org/train2017/000000416733.jpg",
-    "http://images.cocodataset.org/train2017/000000203912.jpg",
-    "http://images.cocodataset.org/train2017/000000408143.jpg",
-    "http://images.cocodataset.org/train2017/000000120340.jpg",
-    "http://images.cocodataset.org/train2017/000000124462.jpg",
-    "http://images.cocodataset.org/train2017/000000142718.jpg",
-    "http://images.cocodataset.org/train2017/000000108838.jpg",
-    "http://images.cocodataset.org/train2017/000000445309.jpg",
-    "http://images.cocodataset.org/train2017/000000140197.jpg",
-    "http://images.cocodataset.org/train2017/000000012993.jpg",
-    "http://images.cocodataset.org/train2017/000000111099.jpg",
-    "http://images.cocodataset.org/train2017/000000215867.jpg",
-    "http://images.cocodataset.org/train2017/000000565085.jpg",
-    "http://images.cocodataset.org/train2017/000000314986.jpg",
-    "http://images.cocodataset.org/train2017/000000158708.jpg",
-    "http://images.cocodataset.org/train2017/000000263961.jpg",
-    "http://images.cocodataset.org/train2017/000000192128.jpg",
-    "http://images.cocodataset.org/train2017/000000377832.jpg",
-    "http://images.cocodataset.org/train2017/000000187286.jpg",
-    "http://images.cocodataset.org/train2017/000000195510.jpg",
-    "http://images.cocodataset.org/train2017/000000406949.jpg",
-    "http://images.cocodataset.org/train2017/000000330455.jpg",
-]
-
-
-LIST_OF_NON_BICYCLES = [
-    "http://images.cocodataset.org/train2017/000000522418.jpg",
-    "http://images.cocodataset.org/train2017/000000184613.jpg",
-    "http://images.cocodataset.org/train2017/000000318219.jpg",
-    "http://images.cocodataset.org/train2017/000000554625.jpg",
-    "http://images.cocodataset.org/train2017/000000574769.jpg",
-    "http://images.cocodataset.org/train2017/000000060623.jpg",
-    "http://images.cocodataset.org/train2017/000000309022.jpg",
-    "http://images.cocodataset.org/train2017/000000005802.jpg",
-    "http://images.cocodataset.org/train2017/000000222564.jpg",
-    "http://images.cocodataset.org/train2017/000000118113.jpg",
-    "http://images.cocodataset.org/train2017/000000193271.jpg",
-    "http://images.cocodataset.org/train2017/000000224736.jpg",
-    "http://images.cocodataset.org/train2017/000000403013.jpg",
-    "http://images.cocodataset.org/train2017/000000374628.jpg",
-    "http://images.cocodataset.org/train2017/000000328757.jpg",
-    "http://images.cocodataset.org/train2017/000000384213.jpg",
-    "http://images.cocodataset.org/train2017/000000086408.jpg",
-    "http://images.cocodataset.org/train2017/000000372938.jpg",
-    "http://images.cocodataset.org/train2017/000000386164.jpg",
-    "http://images.cocodataset.org/train2017/000000223648.jpg",
-    "http://images.cocodataset.org/train2017/000000204805.jpg",
-    "http://images.cocodataset.org/train2017/000000113588.jpg",
-    "http://images.cocodataset.org/train2017/000000384553.jpg",
-    "http://images.cocodataset.org/train2017/000000337264.jpg",
-    "http://images.cocodataset.org/train2017/000000368402.jpg",
-    "http://images.cocodataset.org/train2017/000000012448.jpg",
-    "http://images.cocodataset.org/train2017/000000542145.jpg",
-    "http://images.cocodataset.org/train2017/000000540186.jpg",
-    "http://images.cocodataset.org/train2017/000000242611.jpg",
-    "http://images.cocodataset.org/train2017/000000051191.jpg",
-    "http://images.cocodataset.org/train2017/000000269105.jpg",
-    "http://images.cocodataset.org/train2017/000000294832.jpg",
-    "http://images.cocodataset.org/train2017/000000144941.jpg",
-    "http://images.cocodataset.org/train2017/000000173350.jpg",
-    "http://images.cocodataset.org/train2017/000000060760.jpg",
-    "http://images.cocodataset.org/train2017/000000324266.jpg",
-    "http://images.cocodataset.org/train2017/000000166532.jpg",
-    "http://images.cocodataset.org/train2017/000000262284.jpg",
-    "http://images.cocodataset.org/train2017/000000360772.jpg",
-    "http://images.cocodataset.org/train2017/000000191381.jpg",
-    "http://images.cocodataset.org/train2017/000000111076.jpg",
-    "http://images.cocodataset.org/train2017/000000340559.jpg",
-    "http://images.cocodataset.org/train2017/000000258985.jpg",
-    "http://images.cocodataset.org/train2017/000000229643.jpg",
-    "http://images.cocodataset.org/train2017/000000125059.jpg",
-    "http://images.cocodataset.org/train2017/000000455483.jpg",
-    "http://images.cocodataset.org/train2017/000000436141.jpg",
-    "http://images.cocodataset.org/train2017/000000129001.jpg",
-    "http://images.cocodataset.org/train2017/000000232262.jpg",
-    "http://images.cocodataset.org/train2017/000000166323.jpg",
-    "http://images.cocodataset.org/train2017/000000580041.jpg",
-    "http://images.cocodataset.org/train2017/000000326781.jpg",
-    "http://images.cocodataset.org/train2017/000000387362.jpg",
-    "http://images.cocodataset.org/train2017/000000138079.jpg",
-    "http://images.cocodataset.org/train2017/000000556616.jpg",
-    "http://images.cocodataset.org/train2017/000000472621.jpg",
-    "http://images.cocodataset.org/train2017/000000192440.jpg",
-    "http://images.cocodataset.org/train2017/000000086320.jpg",
-    "http://images.cocodataset.org/train2017/000000256668.jpg",
-    "http://images.cocodataset.org/train2017/000000383445.jpg",
-    "http://images.cocodataset.org/train2017/000000565797.jpg",
-    "http://images.cocodataset.org/train2017/000000081922.jpg",
-    "http://images.cocodataset.org/train2017/000000050125.jpg",
-    "http://images.cocodataset.org/train2017/000000364521.jpg",
-    "http://images.cocodataset.org/train2017/000000394892.jpg",
-    "http://images.cocodataset.org/train2017/000000001146.jpg",
-    "http://images.cocodataset.org/train2017/000000310391.jpg",
-    "http://images.cocodataset.org/train2017/000000097434.jpg",
-    "http://images.cocodataset.org/train2017/000000463836.jpg",
-    "http://images.cocodataset.org/train2017/000000241876.jpg",
-    "http://images.cocodataset.org/train2017/000000156832.jpg",
-    "http://images.cocodataset.org/train2017/000000270721.jpg",
-    "http://images.cocodataset.org/train2017/000000462341.jpg",
-    "http://images.cocodataset.org/train2017/000000310103.jpg",
-    "http://images.cocodataset.org/train2017/000000032992.jpg",
-    "http://images.cocodataset.org/train2017/000000122851.jpg",
-    "http://images.cocodataset.org/train2017/000000540763.jpg",
-    "http://images.cocodataset.org/train2017/000000138246.jpg",
-    "http://images.cocodataset.org/train2017/000000197254.jpg",
-    "http://images.cocodataset.org/train2017/000000032907.jpg",
-]
-
-
-# from PIL import Image
-# import requests
-
-
-# from scipy import misc
-import imageio
+import hashlib
 import requests
 from io import BytesIO
 
+import imageio.v3 as iio
+
+
+### Train dataset ###
+
+BASE_URL = "http://images.cocodataset.org/train2017/"
+BICYCLE_IDS = [
+    483108, 293802, 79841, 515289, 562150,
+    412151, 462565, 509822, 321107, 61181,
+    18783, 12896, 465692, 391584, 241350,
+    438024, 442726, 435937, 292819, 157416,
+    10393, 84540, 7125, 507249, 75923,
+    240918, 122302, 140006, 536444, 344271,
+    420081, 148668, 390137, 114183, 20307,
+    280736, 536321, 188146, 559312, 535808,
+    451944, 212558, 377867, 139291, 456323,
+    549386, 254491, 314515, 415904, 101636,
+    315173, 260627, 1722, 31092, 556205,
+    49097, 70815, 467000, 416733, 203912,
+    408143, 120340, 124462, 142718, 108838,
+    445309, 140197, 12993, 111099, 215867,
+    565085, 314986, 158708, 263961, 192128,
+    377832, 187286, 195510, 406949, 330455,
+]
+NON_BICYCLE_IDS = [
+    522418, 184613, 318219, 554625, 574769,
+    60623, 309022, 5802, 222564, 118113,
+    193271, 224736, 403013, 374628, 328757,
+    384213, 86408, 372938, 386164, 223648,
+    204805, 113588, 384553, 337264, 368402,
+    12448, 542145, 540186, 242611, 51191,
+    269105, 294832, 144941, 173350, 60760,
+    324266, 166532, 262284, 360772, 191381,
+    111076, 340559, 258985, 229643, 125059,
+    455483, 436141, 129001, 232262, 166323,
+    580041, 326781, 387362, 138079, 556616,
+    472621, 192440, 86320, 256668, 383445,
+    565797, 81922, 50125, 364521, 394892,
+    1146, 310391, 97434, 463836, 241876,
+    156832, 270721, 462341, 310103, 32992,
+    122851, 540763, 138246, 197254, 32907,
+]
+LIST_OF_BICYCLES = [f"{BASE_URL}{str(id).zfill(12)}.jpg" for id in BICYCLE_IDS]
+LIST_OF_NON_BICYCLES = [f"{BASE_URL}{str(id).zfill(12)}.jpg" for id in NON_BICYCLE_IDS]
+
+
+class ImageCache:
+    def __init__(self):
+        self.cache_dir = Path.home() / ".cache" / "betamark"
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+
+    def get_image(self, url):
+        # Create filename from URL hash
+        url_hash = hashlib.md5(url.encode()).hexdigest()
+        cache_path = self.cache_dir / f"{url_hash}.png"
+
+        # Try loading from cache
+        if cache_path.exists():
+            try:
+                return iio.imread(cache_path)
+            except Exception as e:
+                print(f"Error loading cached image: {e}")
+                cache_path.unlink(missing_ok=True)
+
+        # Download if not in cache
+        try:
+            res = requests.get(url)
+            res.raise_for_status()
+            img = iio.imread(BytesIO(res.content))
+            iio.imwrite(cache_path, img, plugin="pillow")
+            return img
+        except Exception as e:
+            print(f"Error downloading image: {e}")
+            return None
+
 
 def run_eval(user_func) -> dict:
+    cache = ImageCache()
     correct_answers = 0
     total_answers = 0
-    for i in tqdm.trange(len(LIST_OF_BICYCLES)):
-        res = requests.get(LIST_OF_BICYCLES[i])
-        np_img = imageio.v2.imread(BytesIO(res.content))
-        model_resp = user_func(np_img)
 
+    for url in tqdm.trange(len(LIST_OF_BICYCLES)):
+        img = cache.get_image(LIST_OF_BICYCLES[url])
         total_answers += 1
-        if model_resp == 1:
+        if user_func(img) == 1:
             correct_answers += 1
 
-    for i in tqdm.trange(len(LIST_OF_NON_BICYCLES)):
-        res = requests.get(LIST_OF_NON_BICYCLES[i])
-        np_img = imageio.v2.imread(BytesIO(res.content))
-        model_resp = user_func(np_img)
-
+    for url in tqdm.trange(len(LIST_OF_NON_BICYCLES)):
+        img = cache.get_image(LIST_OF_NON_BICYCLES[url])
         total_answers += 1
-        if model_resp == 0:
+        if user_func(img) == 0:
             correct_answers += 1
 
-    acc = correct_answers / total_answers
-    return {"acc": acc}
+    return {"acc": correct_answers / total_answers}
