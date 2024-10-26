@@ -34,3 +34,27 @@ def run_eval(user_func) -> dict:
             correct_count += 1
     acc = correct_count / total
     return {"acc": acc}
+
+
+def run_validation(user_func) -> dict:
+    answer_map = {"A": 0, "B": 1, "C": 2, "D": 3}
+
+    correct_count = 0
+    total = 0
+    for i in tqdm.trange(len(ds["test"])):
+        input_formtted = ds["test"][i]["input_formatted"]
+        ground_truth_answer = ds["test"][i]["answer"]
+        predicted_answer = answer_map[strip_model_resp(user_func(input_formtted))]
+        total += 1
+        if ground_truth_answer == predicted_answer:
+            correct_count += 1
+    acc = correct_count / total
+    return {"acc": acc}
+
+
+if __name__ == "__main__":
+
+    def placeholder(x):
+        return "A"
+
+    print(run_validation(user_func=placeholder))
