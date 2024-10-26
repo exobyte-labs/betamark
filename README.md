@@ -86,3 +86,21 @@ def placeholder(x):
 bicycle.run_eval(user_func=placeholder)
 
 ```
+
+### Example of Running Validation Code
+
+When the validation code is pushed at around 2:00 PM ET (Saturday, Oct. 26), please do the following:
+
+(1) Run the following command to update `betamark`
+
+```bash
+pip install git+https://github.com/exobyte-labs/betamark.git -U
+```
+
+(2) Replace `run_eval` with `run_validation`, for example, the bicycle case becomes:
+
+```python
+bicycle.run_validation(user_func=placeholder)
+```
+
+The function static types are the same, so you don't need to worry about integration. The same replacement applies for `ocr` and `tiny_mmlu`.
