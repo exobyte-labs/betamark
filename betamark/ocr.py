@@ -14,7 +14,7 @@ if VERBOSE:
 def run_eval(user_func) -> dict:
     correct_count = 0
     total_count = 0
-    for i in tqdm.trange(len(train_subsample)):
+    for i in tqdm.trange(len(train_subsample["seq"])):
         model_input = train_subsample["seq"][i]
         ground_truth = train_subsample["label"][i]
         model_prediction = user_func(model_input)
@@ -30,7 +30,7 @@ def run_validation(user_func) -> dict:
 
     correct_count = 0
     total_count = 0
-    for i in tqdm.trange(len(test_subsample)):
+    for i in tqdm.trange(len(test_subsample["seq"])):
         model_input = test_subsample["seq"][i]
         ground_truth = test_subsample["label"][i]
         model_prediction = user_func(model_input)
