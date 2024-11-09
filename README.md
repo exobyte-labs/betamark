@@ -18,10 +18,30 @@ For HackOS 1, the current code base uses train or dev datasets. For the final be
 
 ### External Datasets of Interest:
 
-* Genomic Benchmarks (with dataset for OCR): [root GitHub repo](https://github.com/ML-Bioinfo-CEITEC/genomic_benchmarks), [OCR](https://github.com/ML-Bioinfo-CEITEC/genomic_benchmarks/tree/main/datasets/human_ocr_ensembl)
-* MS COCO: https://cocodataset.org/#home
-* MMLU: https://paperswithcode.com/dataset/mmlu
+- ARC AGI: https://github.com/fchollet/ARC-AGI
+- Genomic Benchmarks (with dataset for OCR): [root GitHub repo](https://github.com/ML-Bioinfo-CEITEC/genomic_benchmarks), [OCR](https://github.com/ML-Bioinfo-CEITEC/genomic_benchmarks/tree/main/datasets/human_ocr_ensembl)
+- MS COCO: https://cocodataset.org/#home
+- MMLU: https://paperswithcode.com/dataset/mmlu
 
+### ARC-AGI
+
+```python
+from betamark import arc_agi
+
+def placeholder(x):
+    """
+    Params:
+    -------
+    x: dict of ARC AGI input
+
+    Returns:
+    --------
+    y_pred: list, a n x n matrix of the predicted answer
+    """
+    return [[0,0],[0,0]]
+
+results = arc_agi.run_eval(user_func=placeholder)
+```
 
 ### TinyMMLU Eval
 

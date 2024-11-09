@@ -1,4 +1,4 @@
-from betamark import arc
+from betamark import arc_agi
 
 
 def test_eval():
@@ -12,5 +12,5 @@ def test_eval():
             [7, 8, 7, 8, 7, 8],
         ]
 
-    result = arc.run_eval(user_func=placeholder)
+    result = arc_agi.run_eval(user_func=placeholder)
     assert result["acc"] == 0.0025
