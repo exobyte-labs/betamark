@@ -6,7 +6,7 @@ authors = ["Laurence Liang <you@example.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 datasets = "^3.0.2"
 tqdm = "^4.66.5"
 imageio = "^2.34.0"
