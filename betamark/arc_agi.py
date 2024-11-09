@@ -29,17 +29,20 @@ eval_solutions_data = json.load(open(EVAL_SOLUTIONS_FILEPATH, "r"))
 def run_eval(user_func) -> dict:
     total_score = 0
     for key_name in tqdm.tqdm(eval_challenges_data.keys()):
-        # print(key_name)
-        model_input = eval_challenges_data[key_name]
-        ground_truth = eval_solutions_data[key_name]
-        y_pred = user_func(model_input)
-        if len(ground_truth[0]) != len(y_pred):
-            continue
-        elif len(ground_truth[0][0]) != len(y_pred[0]):
-            continue
-        else:
-            if ground_truth[0] == y_pred:
-                total_score += 1  # add 0.5 each time the model predicts correctly
+        try:
+            # print(key_name)
+            model_input = eval_challenges_data[key_name]
+            ground_truth = eval_solutions_data[key_name]
+            y_pred = user_func(model_input)
+            if len(ground_truth[0]) != len(y_pred):
+                continue
+            elif len(ground_truth[0][0]) != len(y_pred[0]):
+                continue
+            else:
+                if ground_truth[0] == y_pred:
+                    total_score += 1  # add 0.5 each time the model predicts correctly
+        except:
+            pass
 
     acc = total_score / len(list(eval_challenges_data.keys()))
     return {"acc": acc}
