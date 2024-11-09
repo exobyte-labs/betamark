@@ -20,6 +20,8 @@ def run_eval(user_func) -> dict:
         y_pred = user_func(model_input)
         if len(ground_truth[0]) != len(y_pred):
             continue
+        elif len(ground_truth[0][0]) != len(y_pred[0]):
+            continue
         else:
             if ground_truth[0] == y_pred:
                 total_score += 1  # add 0.5 each time the model predicts correctly
