@@ -2,6 +2,13 @@ import json
 
 import tqdm
 
+import pkgutil
+
+FILEPATH = pkgutil.get_data("betamark", "data/arc-agi_evaluation_challenges.json")
+
+# FILEPATH = pkgutil.get_data(__name__, "data/arc-agi_evaluation_challenges.json")
+print(FILEPATH)
+
 
 EVAL_CHALLENGES_FILEPATH = "betamark/data/arc-agi_evaluation_challenges.json"
 EVAL_SOLUTIONS_FILEPATH = "betamark/data/arc-agi_evaluation_solutions.json"
